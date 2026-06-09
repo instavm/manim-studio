@@ -46,10 +46,7 @@ python scripts/deploy.py
 ## Tuning
 
 - Render VM: `memory_mb=8192, vcpu_count=8` in `generator.py`.
-- Base image is env-gated. The deploy script sets a sensible default:
-  - `MANIM_BASE_OCI_IMAGE` (default: `instavm/manim-base:0.20.1`) — public Docker Hub image, anyone can use.
-  - `MANIM_BASE_SNAPSHOT_ID` — private InstaVM snapshot, account-scoped fallback.
-  - If both unset, generator falls back to a slow apt+pip path on every render.
+- Base image: `MANIM_BASE_OCI_IMAGE` (default `instavm/manim-base:0.20.1`).
 
 ## Known gotchas
 
