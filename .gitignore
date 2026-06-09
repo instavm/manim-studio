@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+*.mp4
+.snapshot_id
+.DS_Store
+manimstudio/videos/
+manimstudio/*.db

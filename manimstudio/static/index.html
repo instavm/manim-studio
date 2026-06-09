@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>manim studio — render scenes from prose</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="prompt">$</span>
+    <span class="title">manim&nbsp;studio</span>
+    <span class="sub">// describe a scene · OpenAI drafts · InstaVM renders</span>
+  </div>
+  <div class="meters">
+    <span class="meter" title="renders in flight right now">
+      <span class="dot" id="dot"></span>
+      <span id="active">—</span> active
+    </span>
+  </div>
+</header>
+
+<main>
+  <section class="panel input">
+    <div class="bar">~/scene/prompt</div>
+    <textarea id="prompt" spellcheck="false" placeholder="e.g. a unit circle with a rotating radius, sin(θ) projected onto the y-axis, theta sweeping from 0 to 2π over 6 seconds, color the sine wave yellow"></textarea>
+    <div class="controls">
+      <button id="go">render ⏎</button>
+      <span class="hint">⌘/Ctrl + Enter</span>
+      <span class="err" id="err"></span>
+    </div>
+  </section>
+
+  <section class="panel output">
+    <div class="bar">~/scene/log <span class="status" id="status">idle</span></div>
+    <pre id="log">waiting for prompt…</pre>
+    <div id="result" class="result hidden"></div>
+  </section>
+
+  <section class="panel recent">
+    <div class="bar">~/scene/recent</div>
+    <ul id="recent"></ul>
+  </section>
+</main>
+
+<footer>
+  <span>hosted on instavm · openai drafts · manim renders</span>
+  <a href="https://docs.manim.community/" target="_blank" rel="noreferrer">manim docs ↗</a>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
