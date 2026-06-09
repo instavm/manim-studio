@@ -4,6 +4,8 @@ Prompt → OpenAI writes a Manim scene → renders on InstaVM → MP4.
 
 **Live:** https://outgoing-lively-anaconda.instavm.site/
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ## Architecture
 
 - FastAPI app on a long-lived InstaVM VM (`manimstudio/app.py`).
