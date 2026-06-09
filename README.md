@@ -2,7 +2,7 @@
 
 Prompt → OpenAI writes a Manim scene → renders on InstaVM → MP4.
 
-**Live:** https://outgoing-lively-anaconda.instavm.site/
+**Live:** https://elated-capable-pronghorn.instavm.site/
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 

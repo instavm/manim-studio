@@ -6,8 +6,8 @@ const errEl    = $("err");
 const logEl    = $("log");
 const statusEl = $("status");
 const resultEl = $("result");
-const dotEl    = $("dot");
-const activeEl = $("active");
+const dotEl    = null;
+const activeEl = null;
 const recentEl = $("recent");
 
 let currentAbort = null;
@@ -170,18 +170,8 @@ function escapeHtml(s) {
 }
 
 async function watchStats() {
-  while (true) {
-    try {
-      const r = await fetch("/api/stats", {cache: "no-store"});
-      if (r.ok) {
-        const s = await r.json();
-        activeEl.textContent = s.active;
-        dotEl.classList.toggle("live", s.active > 0);
-        renderRecent(s.recent || []);
-      }
-    } catch {}
-    await sleep(2500);
-  }
+  // active meter and recent list are intentionally hidden; this loop is a no-op
+  return;
 }
 
 // hotkey
@@ -194,3 +184,21 @@ document.addEventListener("keydown", (e) => {
 goBtn.addEventListener("click", submit);
 
 watchStats();
+
+// click-to-play YouTube embeds — swap thumbnail for iframe inline, no page jump
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".example[data-yt]");
+  if (!card) return;
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // let modified clicks open YT
+  e.preventDefault();
+  const id = card.dataset.yt;
+  if (card.classList.contains("playing")) return;
+  card.classList.add("playing");
+  const img = card.querySelector("img");
+  if (img) {
+    const wrap = document.createElement("div");
+    wrap.className = "example-video";
+    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen frameborder="0"></iframe>`;
+    img.replaceWith(wrap);
+  }
+});
