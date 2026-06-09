@@ -241,6 +241,10 @@ pre#log .info { color: var(--muted); }
 }
 .result .links { margin-top: 10px; font-size: 12px; color: var(--muted); display: flex; gap: 14px; }
 
+.meter.gh { text-decoration: none !important; color: var(--muted); }
+.meter.gh:hover { color: var(--ink); }
+.meter.gh svg { vertical-align: -2px; margin-right: 2px; }
+
 #recent { list-style: none; padding: 8px 14px 14px; margin: 0; max-height: 240px; overflow: auto; }
 #recent li {
   padding: 8px 0;
