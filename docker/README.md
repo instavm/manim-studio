@@ -15,12 +15,17 @@ docker buildx build --platform linux/amd64 \
 
 ## Use
 
-Set on the app VM (and locally for `render_in_instavm.py`):
+`scripts/deploy.py` uses this image by default. Override with:
 
 ```bash
-export MANIM_BASE_OCI_IMAGE=instavm/manim-base:0.20.1
+export MANIM_BASE_OCI_IMAGE=instavm/manim-base:0.20.1   # default
 ```
 
-If both `MANIM_BASE_OCI_IMAGE` and `MANIM_BASE_SNAPSHOT_ID` are set, the OCI
-image wins. With neither set the generator falls back to an ephemeral
-sandbox and installs manim live (slow).
+On first deploy, `ensure_snapshot()` calls `snapshots.create(oci_image=...)`
+to bake a per-account InstaVM snapshot from the public image (~5 min),
+then caches the snapshot id in `.snapshot_id` so subsequent deploys reuse
+it. Renders use the cached snapshot.
+
+InstaVM snapshots are account-scoped and not directly shareable, so the
+OCI image is the portable artifact — every account bakes its own snapshot
+from the same public image.
