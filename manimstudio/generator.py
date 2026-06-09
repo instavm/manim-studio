@@ -118,7 +118,7 @@ async def _render_in_sandbox(code: str, log) -> tuple[bool, str, str | None]:
                 log("sandbox > launching from snapshot %s..." % snapshot_id[:8])
                 vm = client.vms.create(
                     wait=True, snapshot_id=snapshot_id,
-                    memory_mb=4096, vcpu_count=4, vm_lifetime_seconds=1800,
+                    memory_mb=2048, vcpu_count=2, vm_lifetime_seconds=1800,
                     metadata={"app": "manim-studio-render"},
                 )
                 client.session_id = vm["session_id"]
