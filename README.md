@@ -45,7 +45,7 @@ python scripts/deploy.py
 
 ## Tuning
 
-- Render VM: `memory_mb=8192, vcpu_count=8` in `generator.py`.
+- Render VM: `memory_mb=4096, vcpu_count=4` in `generator.py`.
 - Base image: `MANIM_BASE_OCI_IMAGE` (default `instavm/manim-base:0.20.1`).
 
 ## Known gotchas

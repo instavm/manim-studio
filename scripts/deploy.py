@@ -136,7 +136,7 @@ Environment=INSTAVM_API_KEY={KEY}
 Environment=MS_DB_PATH={REMOTE_APP}/jobs.db
 Environment=VIDEO_DIR={REMOTE_APP}/videos
 Environment=OPENAI_MODEL=gpt-5.4
-Environment=MAX_CONCURRENT=4
+Environment=MAX_CONCURRENT=6
 Environment=MAX_ATTEMPTS=3
 Environment=RENDER_TIMEOUT=900
 Environment=MANIM_BASE_SNAPSHOT_ID={MANIM_SNAPSHOT_ID}
