@@ -48,6 +48,7 @@ async function submit() {
   clearLog();
   setStatus("submitting…", "");
   appendLog("> " + prompt, "info");
+  document.getElementById("output-panel")?.scrollIntoView({behavior: "smooth", block: "start"});
 
   let res;
   try {

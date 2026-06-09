@@ -55,11 +55,103 @@ header {
 
 main {
   max-width: 1100px;
-  margin: 24px auto;
+  margin: 0 auto;
   padding: 0 20px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px;
+}
+
+.hero {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 24px 0 48px;
+  position: relative;
+}
+.hero-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.hero-title::before { content: "$ "; color: var(--green); }
+.hero-sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 26px;
+}
+.hero-input { box-shadow: 0 8px 40px rgba(181,140,255,0.08); }
+.hero-input textarea { min-height: 180px; font-size: 15px; }
+.scroll-hint {
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 12px;
+  align-self: center;
+  animation: bob 2s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,100% { transform: translateY(0); opacity: 0.5; }
+  50%     { transform: translateY(4px); opacity: 1; }
+}
+
+.examples {
+  padding: 32px 0 8px;
+  scroll-margin-top: 20px;
+}
+.examples-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--accent);
+}
+.examples-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 22px;
+}
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.example {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  color: var(--ink);
+  text-decoration: none !important;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+  display: flex;
+  flex-direction: column;
+}
+.example:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.example img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #000;
+  display: block;
+}
+.example-meta { padding: 12px 14px; }
+.example-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.example-prompt {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+  font-style: italic;
 }
 
 .panel {

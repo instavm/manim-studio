@@ -37,6 +37,15 @@ HARD RULES:
 - Never call self.embed(), never read files, never network.
 - Code must run unchanged with: manim -qh scene.py Generated
 
+SAFE FRAME (text/elements must not be clipped):
+- The visible frame is approximately 14.2 wide × 8 tall (manim units). Keep ALL mobjects within x ∈ [-6.8, 6.8] and y ∈ [-3.8, 3.8].
+- Before adding any Text/MarkupText to the scene, scale it so its width ≤ 12 units: e.g. `if t.width > 12: t.scale_to_fit_width(12)`.
+- Prefer `font_size=24` to `font_size=36` for body text; `font_size=40` for titles. Avoid `font_size=48+` unless it's a single short title.
+- For long labels, break into multiple lines using `\\n` inside Text(...), or wrap in a `Paragraph(..., line_length=40)`.
+- After arranging a row of items with `.arrange(RIGHT, buff=...)`, if the group's width exceeds 12, scale the whole group down: `g.scale_to_fit_width(12)`.
+- Never place a Text directly at `LEFT*7` or `RIGHT*7` — use `LEFT*5.5` / `RIGHT*5.5` max, and `to_edge(LEFT, buff=0.5)` (not buff=0).
+- After every major `self.add(...)` of text, do a final safety pass: `for m in self.mobjects: m.move_to(m.get_center())` is fine but DO NOT let any mobject's bounding box exceed the safe frame.
+
 ALLOWED MOBJECTS / CONSTRUCTS (use ONLY these; do NOT invent or import others):
   Shapes:     Circle, Dot, Square, Rectangle, RoundedRectangle, Triangle, RegularPolygon,
               Polygon, Ellipse, Line, Arrow, DoubleArrow, Arc, Annulus, AnnularSector
