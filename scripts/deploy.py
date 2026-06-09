@@ -15,7 +15,43 @@ from instavm import InstaVM
 
 KEY = pathlib.Path("~/.manim.txt").expanduser().read_text().strip()
 OPENAI_KEY = pathlib.Path("~/.3b1b_openai_key.txt").expanduser().read_text().strip()
-MANIM_SNAPSHOT_ID = (pathlib.Path(__file__).resolve().parent.parent / ".snapshot_id").read_text().strip() if (pathlib.Path(__file__).resolve().parent.parent / ".snapshot_id").exists() else ""
+SNAPSHOT_ID_PATH = pathlib.Path(__file__).resolve().parent.parent / ".snapshot_id"
+MANIM_SNAPSHOT_ID = SNAPSHOT_ID_PATH.read_text().strip() if SNAPSHOT_ID_PATH.exists() else ""
+MANIM_OCI_IMAGE = os.environ.get("MANIM_BASE_OCI_IMAGE", "instavm/manim-base:0.20.1")
+
+
+def ensure_snapshot(client: InstaVM) -> str:
+    """Return a ready manim base snapshot id. Reuse .snapshot_id if present and
+    still ready in the API; otherwise bake one from the public OCI image and
+    persist the id to .snapshot_id."""
+    global MANIM_SNAPSHOT_ID
+    if MANIM_SNAPSHOT_ID:
+        try:
+            d = client.snapshots.get(MANIM_SNAPSHOT_ID)
+            if d.get("status") == "ready":
+                print(f"  using existing snapshot {MANIM_SNAPSHOT_ID[:8]}")
+                return MANIM_SNAPSHOT_ID
+            print(f"  cached snapshot status={d.get('status')}, rebaking...")
+        except Exception as e:
+            print(f"  cached snapshot lookup failed ({e}), rebaking...")
+    print(f"  baking snapshot from {MANIM_OCI_IMAGE} (~5 min)...")
+    snap = client.snapshots.create(
+        oci_image=MANIM_OCI_IMAGE,
+        name=f"manim-base-from-{MANIM_OCI_IMAGE.replace('/', '_').replace(':', '_')}",
+        vcpu_count=4, memory_mb=4096,
+    )
+    sid = snap["id"]
+    while True:
+        d = client.snapshots.get(sid)
+        if d.get("status") == "ready":
+            break
+        if d.get("status") == "failed":
+            raise RuntimeError(f"snapshot build failed: {d.get('last_error')}")
+        time.sleep(10)
+    SNAPSHOT_ID_PATH.write_text(sid + "\n")
+    MANIM_SNAPSHOT_ID = sid
+    print(f"  snapshot {sid} ready, saved to .snapshot_id")
+    return sid
 
 REPO  = pathlib.Path(__file__).resolve().parent.parent
 APP_SRC = REPO / "manimstudio"
@@ -176,6 +212,8 @@ def create_share(client: InstaVM, vm: dict) -> str | None:
 def main():
     print(">> instavm key tail:", KEY[-6:])
     client = InstaVM(api_key=KEY, timeout=900)
+    step("ensure manim base snapshot")
+    ensure_snapshot(client)
     vm = find_or_create_vm(client)
     session_id = vm.get("session_id")
     if not session_id:

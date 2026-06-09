@@ -9,7 +9,7 @@ Prompt → OpenAI writes a Manim scene → renders on InstaVM → MP4.
 ## Architecture
 
 - FastAPI app on a long-lived InstaVM VM (`manimstudio/app.py`).
-- Each render spawns a short-lived VM from a pre-built snapshot
+- Each render spawns a short-lived VM from a pre-built base image
   (`manim==0.20.1` + cairo/pango/ffmpeg). Cold start ~15s.
 - Long-poll job API (`/api/jobs`, `/api/jobs/{id}/poll`).
 
@@ -24,7 +24,9 @@ manimstudio/
 scripts/
   deploy.py         Provision app VM, push code, start systemd unit
   setup_vault.py    Store OpenAI key in InstaVM vault
-.snapshot_id        UUID of the manim base snapshot (gitignored)
+docker/
+  Dockerfile        Public manim base image (instavm/manim-base:0.20.1)
+.snapshot_id        Optional: private snapshot UUID (gitignored)
 ```
 
 ## Setup
@@ -37,19 +39,17 @@ export OPENAI_API_KEY=...
 # one-time: store openai key in instavm vault
 python scripts/setup_vault.py
 
-# build manim base snapshot (one-time, ~5 min)
-# writes snapshot UUID to .snapshot_id
-# (see prior session for builder script)
-
+# deploy (uses the public manim base image by default)
 python scripts/deploy.py
 ```
 
 ## Tuning
 
-- Render VM: `memory_mb=2048, vcpu_count=2` in `generator.py`.
-  2 GB is enough for `manim -qh` (720p). Going higher OOM'd the host worker.
-- Snapshot path is env-gated: `MANIM_BASE_SNAPSHOT_ID`. Unset to fall
-  back to the slow apt+pip path.
+- Render VM: `memory_mb=8192, vcpu_count=8` in `generator.py`.
+- Base image is env-gated. The deploy script sets a sensible default:
+  - `MANIM_BASE_OCI_IMAGE` (default: `instavm/manim-base:0.20.1`) — public Docker Hub image, anyone can use.
+  - `MANIM_BASE_SNAPSHOT_ID` — private InstaVM snapshot, account-scoped fallback.
+  - If both unset, generator falls back to a slow apt+pip path on every render.
 
 ## Known gotchas
 
