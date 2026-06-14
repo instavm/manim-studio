@@ -30,8 +30,10 @@ docker/
 ```
 
 ## Setup
-
-```bash
+Get InstaVM key: [https://dashboard.instavm.io](https://dashboard.instavm.io/auth/signup)
+and OpenAI key: https://platform.openai.com
+```
+bash
 pip install -U instavm openai fastapi uvicorn
 export INSTAVM_API_KEY=...
 export OPENAI_API_KEY=...
