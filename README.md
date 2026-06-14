@@ -16,7 +16,7 @@ Prompt → OpenAI writes a Manim scene → renders on InstaVM → MP4.
 
 - FastAPI app on a long-lived InstaVM VM (`manimstudio/app.py`).
 - Each render spawns a short-lived VM from a pre-built base image
-  (`manim==0.20.1` + cairo/pango/ffmpeg). Cold start ~15s.
+  (`manim==0.20.1` + cairo/pango/ffmpeg). Cold start ~4s.
 - Long-poll job API (`/api/jobs`, `/api/jobs/{id}/poll`).
 
 ## Files
