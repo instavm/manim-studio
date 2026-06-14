@@ -2,6 +2,12 @@
 
 Prompt → OpenAI writes a Manim scene → renders on InstaVM → MP4.
 
+<p align="center">
+  <a href="https://youtu.be/deuK7FxsIZU">
+    <img src="docs/demo_sieve.gif" alt="manim-studio demo — click for full video" width="640">
+  </a>
+</p>
+
 **Live:** https://crafty-resilient-grebe.instavm.site/
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
